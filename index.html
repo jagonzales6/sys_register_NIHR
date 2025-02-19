@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Asistencia</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <h2>Registro de Asistencia</h2>
+
+    <input type="text" id="usuario" placeholder="CI">
+
+    <button onclick="marcarAsistencia(true)">Marcar Entrada</button>
+    <button onclick="marcarAsistencia(false)">Marcar Salida</button>
+
+    <div class="video-container">
+        <video id="video" autoplay></video>
+        <canvas id="canvas" style="display:none;"></canvas>
+        <img id="captura" src="" alt="Captura de imagen">
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
