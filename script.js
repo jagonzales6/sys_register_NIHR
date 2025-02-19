@@ -6,7 +6,7 @@ function marcarAsistencia(entrada) {
     etiqueta = entrada ? "Entrada" : "Salida";
 
     if (!document.getElementById("usuario").value) {
-        alert("Debe ingresar su CI");
+        alert("Debe ingresar un nombre.");
         return;
     }
 
@@ -34,7 +34,7 @@ function tomarFoto() {
                 document.getElementById("captura").src = fotoBase64;
                 video.srcObject.getTracks().forEach(track => track.stop());
                 
-                enviarDatos(); // Envía los datos después de capturar la foto
+                enviarDatos(); // Enviar los datos después de capturar la foto
             }, 2000);
         })
         .catch(() => alert("Error al acceder a la cámara."));
@@ -47,15 +47,18 @@ function enviarDatos() {
         return;
     }
 
-    let url = "https://script.google.com/macros/s/AKfycby6wDdf3t39yDDRLo1DL-LfNewuUDsnjjKyFyhpdV_8YlLKFvylWEfW274qLbZ1UMLlhw/exec"; // Reemplázalo con la URL de tu Apps Script
+    let url = "TU_URL_DEL_SCRIPT"; // Reemplázalo con la URL de tu Apps Script
     let data = { usuario, etiqueta, ubicacion: ubicacionActual, foto: fotoBase64 };
 
     fetch(url, {
         method: "POST",
-        mode: "no-cors",
+        mode: "cors",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
     })
-    .then(() => alert(etiqueta + " registrada exitosamente"))
+    .then(response => response.json())
+    .then(response => {
+        alert(response.message);
+    })
     .catch(() => alert("Error al registrar"));
 }
