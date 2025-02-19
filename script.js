@@ -6,7 +6,7 @@ function marcarAsistencia(entrada) {
     etiqueta = entrada ? "Entrada" : "Salida";
 
     if (!document.getElementById("usuario").value) {
-        alert("Debe ingresar un nombre.");
+        alert("Debe ingresar su CI.");
         return;
     }
 
@@ -47,7 +47,7 @@ function enviarDatos() {
         return;
     }
 
-    let url = "https://script.google.com/macros/s/AKfycbwycB4XAAKC0m9P3Ej_0TsN1gRETSdCcg6qg0BjrqAK1BtVzJ8tNe4fIQzc_OsQDs-fNA/exec"; // Reemplázalo con la URL de tu Apps Script
+    let url = "https://script.google.com/macros/s/AKfycby2c0q8cgGbx9TjXFLjDI4ZwWAG2RiaehmzjxErsP0RW-Vjsw3ahSSkNkUGtj9Blrnt5A/exec"; // Reemplázalo con la URL de tu Apps Script
     let data = { usuario, etiqueta, ubicacion: ubicacionActual, foto: fotoBase64 };
 
     fetch(url, {
