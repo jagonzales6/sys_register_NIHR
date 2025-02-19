@@ -47,7 +47,7 @@ function enviarDatos() {
         return;
     }
 
-    let url = "https://script.google.com/macros/s/AKfycbw0bX2B9YIUVsifqpoDF9c1Ym8U33v_vGXyIXAQIEmbNwTDlSaQ-bNM4Li-Yu1jDh3s7A/exec"; // Reemplázalo con la URL de tu Apps Script
+    let url = "https://script.google.com/macros/s/AKfycbxTxjkQ7FN77fE9PdTr-TkiqKFeMPnI5shKjR4ZPYBL3ra10DtWsMAc-ra6dnHvcT-13Q/exec"; // Reemplázalo con la URL de tu Apps Script
     let data = { usuario, etiqueta, ubicacion: ubicacionActual, foto: fotoBase64 };
 
     fetch(url, {
