@@ -2,34 +2,48 @@ let ubicacionActual = "";
 let fotoBase64 = "";
 let etiqueta = "";
 
-function marcarAsistencia(entrada) {
+// 🔍 Verifica si el usuario ya registró asistencia hoy en la base de datos con una etiqueta específica
+async function verificarRegistro(usuario, etiqueta) {
+  let url = `https://script.google.com/macros/s/AKfycbytAaDTgTXYJ5aqFQS_NJ0glJCi9Rx4wmc_8hiHMfJWy95hwq1afU87jXvyU6mCoBMsCg/exec?usuario=${usuario}&etiqueta=${etiqueta}`;
+  try {
+    let respuesta = await fetch(url);
+    let datos = await respuesta.json();
+    return datos.status === "error" && datos.message.includes(`Ya registraste tu ${etiqueta.toLowerCase()} hoy.`);
+  } catch (error) {
+    console.error("Error al verificar el registro: ", error);
+    return false;
+  }
+}
+
+// 📍 Función principal para registrar asistencia
+async function marcarAsistencia(entrada) {
   etiqueta = entrada ? "Entrada" : "Salida";
   let usuario = document.getElementById("usuario").value;
 
   if (!usuario) {
-    mostrarModal("Error", "Debe ingresar un nombre.");
+    mostrarModal("Error", "Debe ingresar su CI.");
     return;
   }
 
-  let hoy = new Date().toLocaleDateString();
-  let claveRegistro = `registro_${etiqueta.toLowerCase()}_${usuario}`;
-  let ultimoRegistro = localStorage.getItem(claveRegistro);
-
-  if (ultimoRegistro === hoy) {
+  // ✅ Verificar si el usuario ya está registrado hoy con la etiqueta correspondiente
+  let yaRegistrado = await verificarRegistro(usuario, etiqueta);
+  if (yaRegistrado) {
     mostrarModal("Aviso", `Ya has registrado tu ${etiqueta.toLowerCase()} hoy.`);
     return;
   }
 
+  // 🌍 Obtener ubicación
   navigator.geolocation.getCurrentPosition(
     (pos) => {
       ubicacionActual = `${pos.coords.latitude}, ${pos.coords.longitude}`;
-      tomarFoto(claveRegistro);
+      tomarFoto();
     },
     () => mostrarModal("Error", "No se pudo obtener la ubicación.")
   );
 }
 
-function tomarFoto(claveRegistro) {
+// 📸 Capturar foto desde la cámara
+function tomarFoto() {
   navigator.mediaDevices.getUserMedia({ video: true })
     .then((stream) => {
       let video = document.getElementById("video");
@@ -45,13 +59,14 @@ function tomarFoto(claveRegistro) {
         document.getElementById("captura").src = fotoBase64;
         video.srcObject.getTracks().forEach((track) => track.stop());
 
-        enviarDatos(claveRegistro);
+        enviarDatos();
       }, 2000);
     })
     .catch(() => mostrarModal("Error", "Error al acceder a la cámara."));
 }
 
-function enviarDatos(claveRegistro) {
+// 📤 Enviar datos al servidor
+async function enviarDatos() {
   let usuario = document.getElementById("usuario").value;
 
   if (!usuario || !ubicacionActual || !fotoBase64) {
@@ -59,22 +74,24 @@ function enviarDatos(claveRegistro) {
     return;
   }
 
-  let url = "https://script.google.com/macros/s/AKfycbxTxjkQ7FN77fE9PdTr-TkiqKFeMPnI5shKjR4ZPYBL3ra10DtWsMAc-ra6dnHvcT-13Q/exec";
+  let url = "https://script.google.com/macros/s/AKfycbytAaDTgTXYJ5aqFQS_NJ0glJCi9Rx4wmc_8hiHMfJWy95hwq1afU87jXvyU6mCoBMsCg/exec";
   let data = { usuario, etiqueta, ubicacion: ubicacionActual, foto: fotoBase64 };
 
-  fetch(url, {
-    method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data)
-  })
-    .then(() => {
-      localStorage.setItem(claveRegistro, new Date().toLocaleDateString());
-      mostrarModal("Éxito", `${etiqueta} registrada exitosamente.`);
-    })
-    .catch(() => mostrarModal("Error", "Error al registrar."));
+  try {
+    let respuesta = await fetch(url, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+
+    mostrarModal("Éxito", `${etiqueta} registrada exitosamente.`);
+  } catch (error) {
+    mostrarModal("Error", "Error al registrar la asistencia.");
+  }
 }
 
+// 📢 Mostrar modal con mensajes
 function mostrarModal(titulo, mensaje) {
   document.getElementById("modal-titulo").innerText = titulo;
   document.getElementById("modal-mensaje").innerText = mensaje;
@@ -82,7 +99,9 @@ function mostrarModal(titulo, mensaje) {
   document.getElementById("overlay").style.display = "block";
 }
 
+// ❌ Cerrar modal
 function cerrarModal() {
   document.getElementById("modal").style.display = "none";
   document.getElementById("overlay").style.display = "none";
 }
+
