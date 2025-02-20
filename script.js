@@ -5,8 +5,17 @@ let etiqueta = "";
 function marcarAsistencia(entrada) {
     etiqueta = entrada ? "Entrada" : "Salida";
 
-    if (!document.getElementById("usuario").value) {
+    let usuario = document.getElementById("usuario").value;
+    if (!usuario) {
         alert("Debe ingresar un nombre.");
+        return;
+    }
+
+    let hoy = new Date().toLocaleDateString(); // Obtiene la fecha actual en formato local
+    let ultimoRegistro = localStorage.getItem(`registro_${usuario}`);
+
+    if (ultimoRegistro === hoy) {
+        alert("Ya has registrado tu asistencia hoy.");
         return;
     }
 
@@ -56,6 +65,10 @@ function enviarDatos() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
     })
-    .then(() => alert(etiqueta + " registrada exitosamente"))
+    .then(() => {
+        localStorage.setItem(`registro_${usuario}`, new Date().toLocaleDateString()); // Guarda la fecha del registro
+        alert(etiqueta + " registrada exitosamente");
+    })
     .catch(() => alert("Error al registrar"));
 }
+
