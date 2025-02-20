@@ -4,7 +4,7 @@ let etiqueta = "";
 
 // 🔍 Verifica si el usuario ya registró asistencia hoy en la base de datos con una etiqueta específica
 async function verificarRegistro(usuario, etiqueta) {
-  let url = `https://script.google.com/macros/s/AKfycbytAaDTgTXYJ5aqFQS_NJ0glJCi9Rx4wmc_8hiHMfJWy95hwq1afU87jXvyU6mCoBMsCg/exec?usuario=${usuario}&etiqueta=${etiqueta}`;
+  let url = `https://script.google.com/macros/s/AKfycbypK4KN5YplAXIk791jEUsGTdQaF_za9I7-S6svLKZimpHNDMjlMp65KC3Oa-rnRu3ogg/exec?usuario=${usuario}&etiqueta=${etiqueta}`;
   try {
     let respuesta = await fetch(url);
     let datos = await respuesta.json();
@@ -74,7 +74,7 @@ async function enviarDatos() {
     return;
   }
 
-  let url = "https://script.google.com/macros/s/AKfycbytAaDTgTXYJ5aqFQS_NJ0glJCi9Rx4wmc_8hiHMfJWy95hwq1afU87jXvyU6mCoBMsCg/exec";
+  let url = "https://script.google.com/macros/s/AKfycbypK4KN5YplAXIk791jEUsGTdQaF_za9I7-S6svLKZimpHNDMjlMp65KC3Oa-rnRu3ogg/exec";
   let data = { usuario, etiqueta, ubicacion: ubicacionActual, foto: fotoBase64 };
 
   try {
@@ -104,4 +104,3 @@ function cerrarModal() {
   document.getElementById("modal").style.display = "none";
   document.getElementById("overlay").style.display = "none";
 }
-
