@@ -59,7 +59,7 @@ function enviarDatos(claveRegistro) {
     return;
   }
 
-  let url = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
+  let url = "https://script.google.com/macros/s/AKfycbxTxjkQ7FN77fE9PdTr-TkiqKFeMPnI5shKjR4ZPYBL3ra10DtWsMAc-ra6dnHvcT-13Q/exec";
   let data = { usuario, etiqueta, ubicacion: ubicacionActual, foto: fotoBase64 };
 
   fetch(url, {
