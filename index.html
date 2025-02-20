@@ -5,68 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Asistencia</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            text-align: center;
-            padding: 20px;
-        }
-        .container {
-            background: white;
-            max-width: 400px;
-            margin: auto;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        h2 {
-            color: #333;
-        }
-        .logo {
-            width: 100%;
-            max-width: 300px;
-            height: auto;
-            margin-bottom: 10px;
-        }
-        input {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin-top: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        .entrada {
-            background-color: #28a745;
-            color: white;
-        }
-        .salida {
-            background-color: #dc3545;
-            color: white;
-        }
-        button:hover {
-            opacity: 0.8;
-        }
-        .video-container {
-            margin-top: 20px;
-        }
-        video, img {
-            width: 100%;
-            max-width: 200px; /* Se redujo el tamaño */
-            border-radius: 5px;
-            display: block;
-            margin: auto;
-        }
-    </style>
 </head>
 <body>
     <div class="container">
@@ -81,6 +19,17 @@
             <img id="captura" src="" alt="Captura de imagen">
         </div>
     </div>
+
+    <!-- Pop-up de confirmación -->
+    <div id="popup" class="popup" style="display:none;">
+        <div class="popup-content">
+            <span class="close" onclick="cerrarPopup()">&times;</span>
+            <h3 id="popupMensaje"></h3>
+            <button onclick="cerrarPopup()">Cerrar</button>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
+
