@@ -1,7 +1,11 @@
+let ubicacionActual = "";
+let fotoBase64 = "";
+let etiqueta = "";
+
 function marcarAsistencia(entrada) {
   etiqueta = entrada ? "Entrada" : "Salida";
-
   let usuario = document.getElementById("usuario").value;
+
   if (!usuario) {
     mostrarModal("Error", "Debe ingresar un nombre.");
     return;
@@ -12,10 +16,7 @@ function marcarAsistencia(entrada) {
   let ultimoRegistro = localStorage.getItem(claveRegistro);
 
   if (ultimoRegistro === hoy) {
-    mostrarModal(
-      "Aviso",
-      `Ya has registrado tu ${etiqueta.toLowerCase()} hoy.`
-    );
+    mostrarModal("Aviso", `Ya has registrado tu ${etiqueta.toLowerCase()} hoy.`);
     return;
   }
 
@@ -24,15 +25,12 @@ function marcarAsistencia(entrada) {
       ubicacionActual = `${pos.coords.latitude}, ${pos.coords.longitude}`;
       tomarFoto(claveRegistro);
     },
-    () => {
-      mostrarModal("Error", "No se pudo obtener la ubicación.");
-    }
+    () => mostrarModal("Error", "No se pudo obtener la ubicación.")
   );
 }
 
 function tomarFoto(claveRegistro) {
-  navigator.mediaDevices
-    .getUserMedia({ video: true })
+  navigator.mediaDevices.getUserMedia({ video: true })
     .then((stream) => {
       let video = document.getElementById("video");
       video.srcObject = stream;
@@ -55,19 +53,14 @@ function tomarFoto(claveRegistro) {
 
 function enviarDatos(claveRegistro) {
   let usuario = document.getElementById("usuario").value;
+
   if (!usuario || !ubicacionActual || !fotoBase64) {
     mostrarModal("Error", "Falta información para registrar.");
     return;
   }
 
-  let url =
-    "https://script.google.com/macros/s/AKfycbxTxjkQ7FN77fE9PdTr-TkiqKFeMPnI5shKjR4ZPYBL3ra10DtWsMAc-ra6dnHvcT-13Q/exec"; // Reemplázalo con la URL de tu Apps Script
-  let data = {
-    usuario,
-    etiqueta,
-    ubicacion: ubicacionActual,
-    foto: fotoBase64
-  };
+  let url = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
+  let data = { usuario, etiqueta, ubicacion: ubicacionActual, foto: fotoBase64 };
 
   fetch(url, {
     method: "POST",
@@ -82,7 +75,6 @@ function enviarDatos(claveRegistro) {
     .catch(() => mostrarModal("Error", "Error al registrar."));
 }
 
-// 🎯 Nueva función para mostrar la ventana emergente personalizada
 function mostrarModal(titulo, mensaje) {
   document.getElementById("modal-titulo").innerText = titulo;
   document.getElementById("modal-mensaje").innerText = mensaje;
@@ -90,7 +82,6 @@ function mostrarModal(titulo, mensaje) {
   document.getElementById("overlay").style.display = "block";
 }
 
-// 🎯 Nueva función para cerrar la ventana emergente
 function cerrarModal() {
   document.getElementById("modal").style.display = "none";
   document.getElementById("overlay").style.display = "none";
