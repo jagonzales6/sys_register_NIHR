@@ -118,30 +118,6 @@ img {
   z-index: 999;
 }
 
-/* Título del modal */
-.modal h2 {
-  margin-bottom: 10px;
-  font-size: 20px;
-  color: #333;
-}
-
-/* Botón dentro del modal */
-.modal button {
-  margin-top: 10px;
-  padding: 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-  width: 100%;
-  transition: 0.3s ease-in-out;
-}
-
-.modal button:hover {
-  background-color: #0056b3;
-}
-
 /* Animación de entrada del modal */
 @keyframes fadeIn {
   from {
@@ -153,3 +129,4 @@ img {
     transform: translate(-50%, -50%);
   }
 }
+
