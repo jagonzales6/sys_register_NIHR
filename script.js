@@ -2,32 +2,47 @@ let ubicacionActual = "";
 let fotoBase64 = "";
 let etiqueta = "";
 
+function mostrarPopup(mensaje) {
+    let popup = document.createElement("div");
+    popup.style.position = "fixed";
+    popup.style.top = "50%";
+    popup.style.left = "50%";
+    popup.style.transform = "translate(-50%, -50%)";
+    popup.style.backgroundColor = "white";
+    popup.style.padding = "20px";
+    popup.style.border = "2px solid black";
+    popup.style.boxShadow = "0 4px 8px rgba(0,0,0,0.2)";
+    popup.style.zIndex = "1000";
+    popup.innerHTML = `<p>${mensaje}</p><button onclick="this.parentNode.remove()">Cerrar</button>`;
+    document.body.appendChild(popup);
+}
+
 function marcarAsistencia(entrada) {
     etiqueta = entrada ? "Entrada" : "Salida";
 
     let usuario = document.getElementById("usuario").value;
     if (!usuario) {
-        alert("Debe ingresar un nombre.");
+        mostrarPopup("Debe ingresar un nombre.");
         return;
     }
 
     let hoy = new Date().toLocaleDateString(); // Obtiene la fecha actual en formato local
-    let ultimoRegistro = localStorage.getItem(`registro_${usuario}`);
+    let registroUsuario = JSON.parse(localStorage.getItem(`registro_${usuario}`)) || {};
 
-    if (ultimoRegistro === hoy) {
-        alert("Ya has registrado tu asistencia hoy.");
+    if (registroUsuario[etiqueta] === hoy) {
+        mostrarPopup(`Ya ha registrado su ${etiqueta} el día de hoy.`);
         return;
     }
 
     navigator.geolocation.getCurrentPosition(pos => {
         ubicacionActual = `${pos.coords.latitude}, ${pos.coords.longitude}`;
-        tomarFoto();
+        tomarFoto(usuario, hoy);
     }, () => {
-        alert("No se pudo obtener la ubicación.");
+        mostrarPopup("No se pudo obtener la ubicación.");
     });
 }
 
-function tomarFoto() {
+function tomarFoto(usuario, hoy) {
     navigator.mediaDevices.getUserMedia({ video: true })
         .then(stream => {
             let video = document.getElementById("video");
@@ -42,21 +57,19 @@ function tomarFoto() {
                 fotoBase64 = canvas.toDataURL("image/jpeg");
                 document.getElementById("captura").src = fotoBase64;
                 video.srcObject.getTracks().forEach(track => track.stop());
-                
-                enviarDatos(); // Envía los datos después de capturar la foto
+                enviarDatos(usuario, hoy);
             }, 2000);
         })
-        .catch(() => alert("Error al acceder a la cámara."));
+        .catch(() => mostrarPopup("Error al acceder a la cámara."));
 }
 
-function enviarDatos() {
-    let usuario = document.getElementById("usuario").value;
+function enviarDatos(usuario, hoy) {
     if (!usuario || !ubicacionActual || !fotoBase64) {
-        alert("Error: Falta información para registrar.");
+        mostrarPopup("Error: Falta información para registrar.");
         return;
     }
 
-    let url = "https://script.google.com/macros/s/AKfycbxTxjkQ7FN77fE9PdTr-TkiqKFeMPnI5shKjR4ZPYBL3ra10DtWsMAc-ra6dnHvcT-13Q/exec"; // Reemplázalo con la URL de tu Apps Script
+    let url = "https://script.google.com/macros/s/AKfycbxTxjkQ7FN77fE9PdTr-TkiqKFeMPnI5shKjR4ZPYBL3ra10DtWsMAc-ra6dnHvcT-13Q/exec";
     let data = { usuario, etiqueta, ubicacion: ubicacionActual, foto: fotoBase64 };
 
     fetch(url, {
@@ -66,9 +79,10 @@ function enviarDatos() {
         body: JSON.stringify(data)
     })
     .then(() => {
-        localStorage.setItem(`registro_${usuario}`, new Date().toLocaleDateString()); // Guarda la fecha del registro
-        alert(etiqueta + " registrada exitosamente");
+        let registroUsuario = JSON.parse(localStorage.getItem(`registro_${usuario}`)) || {};
+        registroUsuario[etiqueta] = hoy;
+        localStorage.setItem(`registro_${usuario}`, JSON.stringify(registroUsuario));
+        mostrarPopup(`${etiqueta} registrada exitosamente.`);
     })
-    .catch(() => alert("Error al registrar"));
+    .catch(() => mostrarPopup("Error al registrar"));
 }
-
