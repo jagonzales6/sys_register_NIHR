@@ -1,11 +1,16 @@
 /* Estilos generales */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
     text-align: center;
     padding: 20px;
+    background-color: #f4f4f4;
 }
 
+h2 {
+    color: #333;
+}
+
+/* Contenedor principal */
 .container {
     background: white;
     max-width: 400px;
@@ -15,10 +20,7 @@ body {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-h2 {
-    color: #333;
-}
-
+/* Logo */
 .logo {
     width: 100%;
     max-width: 300px;
@@ -26,79 +28,127 @@ h2 {
     margin-bottom: 10px;
 }
 
+/* Campos de entrada */
 input {
-    width: calc(100% - 20px);
     padding: 10px;
-    margin-top: 10px;
+    margin: 10px;
+    width: 80%;
+    max-width: 300px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    font-size: 16px;
 }
 
+/* Botones */
 button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
+    padding: 10px 15px;
+    margin: 10px;
     border: none;
-    border-radius: 5px;
     font-size: 16px;
     cursor: pointer;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 300px;
+    transition: 0.3s ease-in-out;
 }
 
+/* Botón de entrada */
 .entrada {
     background-color: #28a745;
     color: white;
 }
 
+.entrada:hover {
+    background-color: #218838;
+}
+
+/* Botón de salida */
 .salida {
     background-color: #dc3545;
     color: white;
 }
 
-button:hover {
-    opacity: 0.8;
+.salida:hover {
+    background-color: #c82333;
 }
 
+/* Contenedor de video */
 .video-container {
     margin-top: 20px;
 }
 
+/* Estilos para video y captura */
 video, img {
     width: 100%;
     max-width: 200px;
     border-radius: 5px;
     display: block;
     margin: auto;
+    border: 2px solid #333;
 }
 
-/* Estilos del pop-up */
-.popup {
+/* Estilos del Modal */
+.modal {
     display: none;
     position: fixed;
     z-index: 1000;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 350px;
     background-color: white;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    width: 300px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
     text-align: center;
+    animation: fadeIn 0.3s ease-in-out;
 }
 
-.popup-content {
-    position: relative;
+/* Estilos del fondo oscuro detrás del modal */
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
 }
 
-.close {
-    position: absolute;
-    top: 10px;
-    right: 15px;
+/* Título del modal */
+.modal h2 {
+    margin-bottom: 10px;
     font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
+    color: #333;
 }
 
-.close:hover {
-    color: red;
+/* Botón dentro del modal */
+.modal button {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+    transition: 0.3s ease-in-out;
+}
+
+.modal button:hover {
+    background-color: #0056b3;
+}
+
+/* Animación de entrada del modal */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
 }
