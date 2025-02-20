@@ -5,23 +5,80 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Asistencia</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333;
+        }
+        .logo {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+        input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .entrada {
+            background-color: #28a745;
+            color: white;
+        }
+        .salida {
+            background-color: #dc3545;
+            color: white;
+        }
+        button:hover {
+            opacity: 0.8;
+        }
+        .video-container {
+            margin-top: 20px;
+        }
+        video, img {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
-
-    <h2>Registro de Asistencia</h2>
-
-    <input type="text" id="usuario" placeholder="CI">
-
-    <button onclick="marcarAsistencia(true)">Marcar Entrada</button>
-    <button onclick="marcarAsistencia(false)">Marcar Salida</button>
-
-    <div class="video-container">
-        <video id="video" autoplay></video>
-        <canvas id="canvas" style="display:none;"></canvas>
-        <img id="captura" src="" alt="Captura de imagen">
+    <div class="container">
+        <img src="https://github.com/jagonzales6/sys_register_NIHR/blob/main/logo-nihr-latam.png" alt="Logo" class="logo">
+        <h2>Registro de Asistencia</h2>
+        <input type="text" id="usuario" placeholder="Ingrese su CI">
+        <button class="entrada" onclick="marcarAsistencia(true)">Marcar Entrada</button>
+        <button class="salida" onclick="marcarAsistencia(false)">Marcar Salida</button>
+        <div class="video-container">
+            <video id="video" autoplay></video>
+            <canvas id="canvas" style="display:none;"></canvas>
+            <img id="captura" src="" alt="Captura de imagen">
+        </div>
     </div>
-
     <script src="script.js"></script>
-
 </body>
 </html>
