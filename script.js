@@ -1,48 +1,30 @@
-let ubicacionActual = "";
-let fotoBase64 = "";
-let etiqueta = "";
-
-function mostrarPopup(mensaje) {
-    let popup = document.createElement("div");
-    popup.style.position = "fixed";
-    popup.style.top = "50%";
-    popup.style.left = "50%";
-    popup.style.transform = "translate(-50%, -50%)";
-    popup.style.backgroundColor = "white";
-    popup.style.padding = "20px";
-    popup.style.border = "2px solid black";
-    popup.style.boxShadow = "0 4px 8px rgba(0,0,0,0.2)";
-    popup.style.zIndex = "1000";
-    popup.innerHTML = `<p>${mensaje}</p><button onclick="this.parentNode.remove()">Cerrar</button>`;
-    document.body.appendChild(popup);
-}
-
 function marcarAsistencia(entrada) {
     etiqueta = entrada ? "Entrada" : "Salida";
 
     let usuario = document.getElementById("usuario").value;
     if (!usuario) {
-        mostrarPopup("Debe ingresar un nombre.");
+        mostrarModal("Error", "Debe ingresar un nombre.");
         return;
     }
 
-    let hoy = new Date().toLocaleDateString(); // Obtiene la fecha actual en formato local
-    let registroUsuario = JSON.parse(localStorage.getItem(`registro_${usuario}`)) || {};
+    let hoy = new Date().toLocaleDateString();
+    let claveRegistro = `registro_${etiqueta.toLowerCase()}_${usuario}`;
+    let ultimoRegistro = localStorage.getItem(claveRegistro);
 
-    if (registroUsuario[etiqueta] === hoy) {
-        mostrarPopup(`Ya ha registrado su ${etiqueta} el día de hoy.`);
+    if (ultimoRegistro === hoy) {
+        mostrarModal("Aviso", `Ya has registrado tu ${etiqueta.toLowerCase()} hoy.`);
         return;
     }
 
     navigator.geolocation.getCurrentPosition(pos => {
         ubicacionActual = `${pos.coords.latitude}, ${pos.coords.longitude}`;
-        tomarFoto(usuario, hoy);
+        tomarFoto(claveRegistro);
     }, () => {
-        mostrarPopup("No se pudo obtener la ubicación.");
+        mostrarModal("Error", "No se pudo obtener la ubicación.");
     });
 }
 
-function tomarFoto(usuario, hoy) {
+function tomarFoto(claveRegistro) {
     navigator.mediaDevices.getUserMedia({ video: true })
         .then(stream => {
             let video = document.getElementById("video");
@@ -57,19 +39,21 @@ function tomarFoto(usuario, hoy) {
                 fotoBase64 = canvas.toDataURL("image/jpeg");
                 document.getElementById("captura").src = fotoBase64;
                 video.srcObject.getTracks().forEach(track => track.stop());
-                enviarDatos(usuario, hoy);
+
+                enviarDatos(claveRegistro);
             }, 2000);
         })
-        .catch(() => mostrarPopup("Error al acceder a la cámara."));
+        .catch(() => mostrarModal("Error", "Error al acceder a la cámara."));
 }
 
-function enviarDatos(usuario, hoy) {
+function enviarDatos(claveRegistro) {
+    let usuario = document.getElementById("usuario").value;
     if (!usuario || !ubicacionActual || !fotoBase64) {
-        mostrarPopup("Error: Falta información para registrar.");
+        mostrarModal("Error", "Falta información para registrar.");
         return;
     }
 
-    let url = "https://script.google.com/macros/s/AKfycbxTxjkQ7FN77fE9PdTr-TkiqKFeMPnI5shKjR4ZPYBL3ra10DtWsMAc-ra6dnHvcT-13Q/exec";
+    let url = "https://script.google.com/macros/s/AKfycbxTxjkQ7FN77fE9PdTr-TkiqKFeMPnI5shKjR4ZPYBL3ra10DtWsMAc-ra6dnHvcT-13Q/exec"; // Reemplázalo con la URL de tu Apps Script
     let data = { usuario, etiqueta, ubicacion: ubicacionActual, foto: fotoBase64 };
 
     fetch(url, {
@@ -79,10 +63,22 @@ function enviarDatos(usuario, hoy) {
         body: JSON.stringify(data)
     })
     .then(() => {
-        let registroUsuario = JSON.parse(localStorage.getItem(`registro_${usuario}`)) || {};
-        registroUsuario[etiqueta] = hoy;
-        localStorage.setItem(`registro_${usuario}`, JSON.stringify(registroUsuario));
-        mostrarPopup(`${etiqueta} registrada exitosamente.`);
+        localStorage.setItem(claveRegistro, new Date().toLocaleDateString());
+        mostrarModal("Éxito", `${etiqueta} registrada exitosamente.`);
     })
-    .catch(() => mostrarPopup("Error al registrar"));
+    .catch(() => mostrarModal("Error", "Error al registrar."));
+}
+
+// 🎯 Nueva función para mostrar la ventana emergente personalizada
+function mostrarModal(titulo, mensaje) {
+    document.getElementById("modal-titulo").innerText = titulo;
+    document.getElementById("modal-mensaje").innerText = mensaje;
+    document.getElementById("modal").style.display = "block";
+    document.getElementById("overlay").style.display = "block";
+}
+
+// 🎯 Nueva función para cerrar la ventana emergente
+function cerrarModal() {
+    document.getElementById("modal").style.display = "none";
+    document.getElementById("overlay").style.display = "none";
 }
