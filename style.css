@@ -1,45 +1,49 @@
-/* Estilos generales */
+/* 🎨 Estilos generales */
 body {
   font-family: Arial, sans-serif;
   text-align: center;
-  padding: 20px;
   background-color: #f4f4f4;
-}
-
-h2 {
-  color: #333;
+  padding: 20px;
+  margin: 0;
 }
 
 /* Contenedor principal */
 .container {
   background: white;
-  max-width: 400px;
+  max-width: 500px;
   margin: auto;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Logo */
+/* 📌 Logo */
 .logo {
-  width: 100%;
-  max-width: 300px;
+  width: 80%;
+  max-width: 250px;
   height: auto;
   margin-bottom: 10px;
 }
 
-/* Campos de entrada */
+/* 📌 Títulos */
+h2 {
+  color: #333;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+/* 📌 Campos de entrada */
 input {
   padding: 10px;
   margin: 10px;
-  width: 80%;
+  width: 90%;
   max-width: 300px;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 16px;
 }
 
-/* Botones */
+/* 📌 Botones */
 button {
   padding: 10px 15px;
   margin: 10px;
@@ -47,8 +51,8 @@ button {
   font-size: 16px;
   cursor: pointer;
   border-radius: 5px;
-  width: 80%;
-  max-width: 300px;
+  width: 45%;
+  max-width: 140px;
   transition: 0.3s ease-in-out;
 }
 
@@ -72,23 +76,92 @@ button {
   background-color: #c82333;
 }
 
-/* Contenedor de video */
-.video-container {
-  margin-top: 20px;
+/* 📌 Botón "Tomar Foto" */
+.tomar-foto {
+  background-color: #007bff;
+  color: white;
+  width: 100%;
+  max-width: 300px;
+  margin-top: 10px;
 }
 
-/* Estilos para video y captura */
-video,
-img {
+.tomar-foto:hover {
+  background-color: #0056b3;
+}
+
+/* ⚠️ Estilos para deshabilitar botones hasta que se tome la foto */
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* 📌 Contenedor de la cámara */
+.video-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 📹 Estilos para el video (se redujo el tamaño de la cámara) */
+video {
   width: 100%;
-  max-width: 200px;
-  border-radius: 5px;
-  display: block;
-  margin: auto;
+  max-width: 250px; /* 🔽 Se redujo el tamaño de la cámara en vivo */
+  border-radius: 10px;
   border: 2px solid #333;
 }
 
-/* Estilos del Modal */
+/* 📸 Estilos para la imagen capturada (más pequeña) */
+#captura {
+  width: 100%;
+  max-width: 100px; /* 🔽 Se redujo el tamaño de la imagen capturada */
+  margin-top: 10px;
+  border-radius: 10px;
+  border: 2px solid #333;
+}
+
+/* 📄 Tabla de registros */
+#tabla-registros {
+  width: 100%;
+  max-width: 450px;
+  margin: 20px auto;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+#tabla-registros thead {
+  background-color: #007bff;
+  color: white;
+}
+
+#tabla-registros th, #tabla-registros td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: center;
+  font-size: 14px;
+}
+
+#tabla-registros tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+#tabla-registros tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* 📸 Estilos para las imágenes en la tabla */
+#tabla-registros img {
+  width: 40px;
+  height: auto;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* 📢 Modal */
 .modal {
   display: none;
   position: fixed;
@@ -106,7 +179,7 @@ img {
   animation: fadeIn 0.3s ease-in-out;
 }
 
-/* Estilos del fondo oscuro detrás del modal */
+/* Fondo oscuro cuando el modal está activo */
 .overlay {
   display: none;
   position: fixed;
@@ -118,7 +191,7 @@ img {
   z-index: 999;
 }
 
-/* Animación de entrada del modal */
+/* Animación del modal */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -127,5 +200,25 @@ img {
   to {
     opacity: 1;
     transform: translate(-50%, -50%);
+  }
+}
+
+/* 📱 Responsividad */
+@media screen and (max-width: 600px) {
+  .container {
+    width: 90%;
+  }
+
+  #tabla-registros {
+    font-size: 12px;
+  }
+
+  #tabla-registros th, #tabla-registros td {
+    padding: 8px;
+  }
+
+  video,
+  img {
+    max-width: 200px;
   }
 }
