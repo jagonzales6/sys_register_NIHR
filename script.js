@@ -180,3 +180,4 @@ window.addEventListener("load", activarCamara);
 
 // 📢 Cerrar modal si se hace clic fuera del contenido
 document.getElementById("overlay").addEventListener("click", cerrarModal);
+
