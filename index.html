@@ -5,38 +5,69 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Registro de Asistencia</title>
-  <!-- Consumir el archivo CSS directamente desde el mismo directorio -->
-  <link rel="stylesheet" href="style.css">
+
+  <!-- Asegurar que el CSS se cargue correctamente -->
+  <link rel="stylesheet" type="text/css" href="./style.css">
 </head>
 
 <body>
   <div class="container">
-    <!-- Imagen desde GitHub -->
+    <!-- Imagen del logo -->
     <img src="https://raw.githubusercontent.com/jagonzales6/sys_register_NIHR/main/logo-nihr-latam.png" alt="Logo" class="logo">
+    
     <h2>Registro de Asistencia</h2>
+    
+    <!-- Input para el usuario -->
     <input type="text" id="usuario" placeholder="Ingrese su CI">
-    <button class="entrada" onclick="marcarAsistencia(true)">Marcar Entrada</button>
-    <button class="salida" onclick="marcarAsistencia(false)">Marcar Salida</button>
+
+    <!-- Contenedor de la cámara -->
     <div class="video-container">
       <video id="video" autoplay></video>
       <canvas id="canvas" style="display:none;"></canvas>
       <img id="captura" src="" alt="Captura de imagen">
     </div>
+
+    <!-- Botón para tomar la foto manualmente -->
+    <button class="tomar-foto" onclick="tomarFoto()">Tomar Foto</button>
+
+    <!-- Botones de acción (deshabilitados hasta que se tome la foto) -->
+    <button class="entrada" onclick="marcarAsistencia(true)" disabled>Marcar Entrada</button>
+    <button class="salida" onclick="marcarAsistencia(false)" disabled>Marcar Salida</button>
+
+    <!-- Tabla de registros -->
+    <h2>Historial de Asistencia</h2>
+    <table border="1" id="tabla-registros">
+      <thead>
+        <tr>
+          <th>Usuario</th>
+          <th>Etiqueta</th>
+          <th>Ubicación</th>
+          <th>Foto</th>
+          <th>Hora</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Aquí se agregarán los registros dinámicamente -->
+      </tbody>
+    </table>
   </div>
 
   <!-- Overlay para el modal -->
-  <div class="overlay" id="overlay"></div>
+  <div class="overlay" id="overlay" onclick="cerrarModal()"></div>
 
   <!-- Modal para mostrar mensajes -->
   <div id="modal" class="modal">
-    <h2 id="modal-titulo"></h2>
-    <p id="modal-mensaje"></p>
-    <button onclick="cerrarModal()">Cerrar</button>
+    <div class="modal-content">
+      <h2 id="modal-titulo"></h2>
+      <p id="modal-mensaje"></p>
+      <button onclick="cerrarModal()">Cerrar</button>
+    </div>
   </div>
 
-  <!-- Consumir el archivo JS directamente desde el mismo directorio -->
-  <script src="script.js" defer></script>
+  <!-- Asegurar que el JS se cargue correctamente -->
+  <script src="./script.js" defer></script>
 </body>
 
 </html>
+
 
